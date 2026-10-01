@@ -54,6 +54,8 @@ def run(path: str, use_shap: bool = False) -> dict:
             names = [n.split("__", 1)[-1] for n in pre.get_feature_names_out()]
             explainer = shap.TreeExplainer(clf)
             sv = explainer.shap_values(Xt)
+            if isinstance(sv, list):  # older shap returns one array per class
+                sv = sv[1]
             plt.figure()
             shap.summary_plot(sv, Xt, feature_names=names, show=False)
             plt.tight_layout()

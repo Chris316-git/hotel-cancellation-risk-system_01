@@ -1,7 +1,7 @@
 """Compare several model families on the same temporal split.
 
-Always runs: logistic regression, HistGradientBoosting, random forest (scikit-learn).
-Runs if installed: LightGBM, XGBoost.
+Always runs: logistic regression, HistGradientBoosting, random forest, LightGBM.
+Runs if installed: XGBoost.
 
 Run: python -m hotel_risk.compare_models data/raw/hotel_bookings.csv
 Writes reports/model_comparison.json
@@ -20,7 +20,7 @@ from sklearn.preprocessing import OrdinalEncoder
 
 from .data import CATEGORICAL, NUMERIC, TARGET, booking_time_features, clean, load_raw, temporal_split
 from .evaluate import score
-from .models import make_baseline, make_gbm
+from .models import make_baseline, make_gbm, make_hgb
 
 
 def _ordinal_pre() -> ColumnTransformer:
@@ -33,16 +33,11 @@ def _ordinal_pre() -> ColumnTransformer:
 def candidates() -> dict:
     out = {
         "logistic_regression": make_baseline,
-        "hist_gbm": make_gbm,
+        "hist_gbm": make_hgb,
         "random_forest": lambda: Pipeline([("pre", _ordinal_pre()), ("clf", RandomForestClassifier(
             n_estimators=200, min_samples_leaf=5, n_jobs=-1, random_state=0))]),
+        "lightgbm": make_gbm,
     }
-    try:
-        from lightgbm import LGBMClassifier
-        out["lightgbm"] = lambda: Pipeline([("pre", _ordinal_pre()), ("clf", LGBMClassifier(
-            n_estimators=400, learning_rate=0.05, num_leaves=31, random_state=0, verbose=-1))])
-    except Exception as e:  # not installed, or a native library (e.g. libomp on macOS) is missing
-        print(f"skipping optional model: {e.__class__.__name__}")
     try:
         from xgboost import XGBClassifier
         out["xgboost"] = lambda: Pipeline([("pre", _ordinal_pre()), ("clf", XGBClassifier(

@@ -2,99 +2,99 @@
   "metric": "drop in test ROC-AUC when the feature is shuffled (mean, std over 5 repeats)",
   "features": [
     {
-      "feature": "agent",
-      "auc_drop": 0.1192,
-      "std": 0.0007
-    },
-    {
       "feature": "country",
-      "auc_drop": 0.1041,
-      "std": 0.0007
+      "auc_drop": 0.1066,
+      "std": 0.0011
     },
     {
       "feature": "deposit_type",
-      "auc_drop": 0.0816,
-      "std": 0.0022
+      "auc_drop": 0.0828,
+      "std": 0.0019
+    },
+    {
+      "feature": "agent",
+      "auc_drop": 0.0739,
+      "std": 0.0007
+    },
+    {
+      "feature": "market_segment",
+      "auc_drop": 0.0666,
+      "std": 0.0017
     },
     {
       "feature": "lead_time",
-      "auc_drop": 0.0278,
-      "std": 0.001
-    },
-    {
-      "feature": "customer_type",
-      "auc_drop": 0.0217,
+      "auc_drop": 0.0315,
       "std": 0.0009
     },
     {
+      "feature": "customer_type",
+      "auc_drop": 0.0211,
+      "std": 0.0008
+    },
+    {
       "feature": "previous_bookings_not_canceled",
-      "auc_drop": 0.0096,
+      "auc_drop": 0.0101,
       "std": 0.0006
     },
     {
       "feature": "adr",
-      "auc_drop": 0.0071,
+      "auc_drop": 0.0069,
       "std": 0.0006
     },
     {
       "feature": "total_nights",
-      "auc_drop": 0.0025,
-      "std": 0.0002
+      "auc_drop": 0.003,
+      "std": 0.0003
     },
     {
       "feature": "previous_cancellations",
-      "auc_drop": 0.0025,
+      "auc_drop": 0.003,
       "std": 0.0003
-    },
-    {
-      "feature": "market_segment",
-      "auc_drop": 0.0025,
-      "std": 0.0001
-    },
-    {
-      "feature": "meal",
-      "auc_drop": 0.0014,
-      "std": 0.0003
-    },
-    {
-      "feature": "adults",
-      "auc_drop": 0.0013,
-      "std": 0.0001
     },
     {
       "feature": "arrival_date_week_number",
+      "auc_drop": 0.0021,
+      "std": 0.0003
+    },
+    {
+      "feature": "distribution_channel",
+      "auc_drop": 0.0013,
+      "std": 0.0002
+    },
+    {
+      "feature": "meal",
+      "auc_drop": 0.0011,
+      "std": 0.0001
+    },
+    {
+      "feature": "total_guests",
       "auc_drop": 0.001,
       "std": 0.0002
     },
     {
-      "feature": "total_guests",
-      "auc_drop": 0.0008,
-      "std": 0.0001
-    },
-    {
-      "feature": "company",
-      "auc_drop": 0.0007,
-      "std": 0.0001
-    },
-    {
-      "feature": "is_repeated_guest",
+      "feature": "adults",
       "auc_drop": 0.0006,
       "std": 0.0001
     },
     {
       "feature": "stays_in_week_nights",
       "auc_drop": 0.0005,
-      "std": 0.0001
+      "std": 0.0002
     },
     {
-      "feature": "distribution_channel",
+      "feature": "company",
       "auc_drop": 0.0004,
       "std": 0.0001
     },
     {
-      "feature": "reserved_room_type",
-      "auc_drop": 0.0002,
+      "feature": "is_repeated_guest",
+      "auc_drop": 0.0003,
       "std": 0.0001
+    },
+    {
+      "feature": "arrival_dow",
+      "auc_drop": 0.0003,
+      "std": 0.0002
     },
     {
       "feature": "babies",
@@ -102,43 +102,43 @@
       "std": 0.0
     },
     {
-      "feature": "arrival_dow",
-      "auc_drop": 0.0001,
-      "std": 0.0003
-    },
-    {
-      "feature": "stays_in_weekend_nights",
-      "auc_drop": 0.0001,
-      "std": 0.0001
-    },
-    {
       "feature": "children",
-      "auc_drop": 0.0,
+      "auc_drop": 0.0001,
+      "std": 0.0
+    },
+    {
+      "feature": "has_agent",
+      "auc_drop": 0.0001,
       "std": 0.0
     },
     {
       "feature": "has_company",
-      "auc_drop": 0.0,
+      "auc_drop": -0.0,
       "std": 0.0
     },
     {
-      "feature": "arrival_month",
+      "feature": "reserved_room_type",
       "auc_drop": -0.0001,
       "std": 0.0001
     },
     {
-      "feature": "has_agent",
+      "feature": "arrival_month",
       "auc_drop": -0.0001,
       "std": 0.0
     },
     {
-      "feature": "arrival_date_day_of_month",
+      "feature": "hotel",
       "auc_drop": -0.0001,
-      "std": 0.0003
+      "std": 0.0001
     },
     {
-      "feature": "hotel",
-      "auc_drop": -0.0013,
+      "feature": "stays_in_weekend_nights",
+      "auc_drop": -0.0007,
+      "std": 0.0001
+    },
+    {
+      "feature": "arrival_date_day_of_month",
+      "auc_drop": -0.0008,
       "std": 0.0001
     }
   ],

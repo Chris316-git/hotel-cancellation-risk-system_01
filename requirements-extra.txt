@@ -1,3 +1,2 @@
 shap>=0.44
-lightgbm>=4.0
 xgboost>=2.0

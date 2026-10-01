@@ -12,9 +12,9 @@ actually means about 70%), a dollars-and-cents decision layer, and a small API y
 - Predicts cancellations using only what the hotel knows when the booking comes in. No peeking at
   how the stay ended.
 - Tests on bookings that arrive *after* the training period, the way a real deployment would.
-  A random split flatters the model (AUC 0.929 vs 0.852). We report the less flattering number.
-- Turns probabilities into an overbooking policy worth about **$1.22M** on the test period
-  under illustrative cost assumptions, roughly 38% of what a perfect fortune teller would earn.
+  A random split flatters the model (AUC 0.924 vs 0.860). We report the less flattering number.
+- Turns probabilities into an overbooking policy worth about **$1.25M** on the test period
+  under illustrative cost assumptions, roughly 38.5% of what a perfect fortune teller would earn.
 
 ## Data
 
@@ -79,9 +79,9 @@ Your numbers may differ in the third decimal depending on library versions.
 | Split | Model | ROC-AUC | PR-AUC | Brier |
 |---|---|---|---|---|
 | Temporal | Logistic baseline | 0.836 | 0.789 | 0.161 |
-| Temporal | HistGradientBoosting | **0.852** | **0.807** | **0.156** |
+| Temporal | LightGBM | **0.860** | **0.813** | **0.150** |
 | Random (for comparison) | Logistic baseline | 0.875 | 0.828 | 0.135 |
-| Random | HistGradientBoosting | 0.929 | 0.900 | 0.102 |
+| Random | LightGBM | 0.924 | 0.893 | 0.107 |
 
 The random split looks better because it lets the model learn from bookings that happen later than
 the ones it is tested on. Real hotels don't get to do that, so the temporal numbers are the ones to trust.
@@ -93,16 +93,16 @@ test (2017-03 onward). Calibrators and the decision threshold are fit on the cal
 
 | Test scores | Brier | Log loss | ECE |
 |---|---|---|---|
-| Raw GBM | 0.158 | 0.476 | 0.066 |
-| Platt (sigmoid) | 0.155 | 0.457 | 0.047 |
-| Isotonic | 0.156 | 0.460 | 0.042 |
+| Raw LightGBM | 0.154 | 0.451 | 0.052 |
+| Platt (sigmoid) | 0.152 | 0.448 | 0.045 |
+| Isotonic | 0.153 | 0.450 | 0.044 |
 
 Calibration makes the probabilities more honest without hurting ranking (AUC stays about 0.85).
 
 Two things worth knowing:
 
 - The threshold picked for 80% precision on the calibration slice (0.46) gave 74% precision and
-  60% recall on test. The cancel rate drifted from 34% to 40% between the two periods, so a
+  62% recall on test. The cancel rate drifted from 34% to 40% between the two periods, so a
   threshold tuned on the past doesn't transfer perfectly. Real data does this.
 - The riskiest 10% of bookings were 100% cancellations on test, largely non-refundable-deposit
   bookings, a well-known quirk of this dataset. Don't read that as superhuman skill. The model
@@ -120,13 +120,13 @@ is re-sold, relocation costs 2 nights of ADR plus $50.
 | Policy (test period, 32,778 bookings) | Net value |
 |---|---|
 | No overbooking | $0 |
-| Flag p >= 0.5 | $774k |
-| Flag p >= 0.8 | $679k |
-| **Cost-aware model** | **$1.22M** |
+| Flag p >= 0.5 | $667k |
+| Flag p >= 0.8 | $538k |
+| **Cost-aware model** | **$1.25M** |
 | Perfect foresight (upper bound) | $3.25M |
 
 The cost-aware policy beats fixed thresholds because it accounts for each booking's price and length of
-stay. Across the scenarios in `reports/phase4_impact.json` the value ranges from $0.4M to $3.4M,
+stay. Across the scenarios in `reports/phase4_impact.json` the value ranges from $0.4M to $3.5M,
 so the real answer depends on real operating costs. It also ignores hotel capacity and demand limits
 and treats bookings as independent, so treat the dollars as an illustration, not a forecast.
 
@@ -136,15 +136,16 @@ Permutation importance on the test period (shuffle one feature, see how much ROC
 
 | Feature | AUC drop |
 |---|---|
-| `agent` | 0.119 |
-| `country` | 0.104 |
-| `deposit_type` | 0.082 |
-| `lead_time` | 0.028 |
-| `customer_type` | 0.022 |
+| `country` | 0.107 |
+| `deposit_type` | 0.083 |
+| `agent` | 0.074 |
+| `market_segment` | 0.067 |
+| `lead_time` | 0.032 |
 
-The plot is in `reports/feature_importance.png`, and a SHAP summary (which direction each feature pushes the prediction) is in `reports/shap_summary.png`. Two honest observations: `lead_time` and
-`deposit_type` are the kind of drivers you'd expect, but `agent` and `country` are the top two.
-Those are specific to *these* hotels (travel agent IDs and where guests come from), so a model
+The plot is in `reports/feature_importance.png`, and a SHAP summary (which direction each feature pushes
+the prediction) is in `reports/shap_summary.png`. Two honest observations: `deposit_type`, `lead_time` and
+`market_segment` are the kind of drivers you'd expect, but `country` and `agent` are also near the top.
+Those are specific to *these* hotels (where guests come from, which travel agents book them), so a model
 trained here would not carry over to another hotel unchanged. That is a limitation of the data, not
 something more tuning would fix.
 
@@ -158,13 +159,10 @@ Same temporal split, different model families:
 | XGBoost | 0.858 | 0.811 | 0.151 |
 | **LightGBM** | **0.860** | **0.813** | **0.150** |
 
-LightGBM and XGBoost edge out scikit-learn's HistGradientBoosting by about 0.006-0.008 AUC. I kept
-HistGradientBoosting as the model used everywhere else (calibration, business impact, API) because
-it needs no extra dependency, the gap is small, and the pipeline's conclusions don't hinge on it.
-Swapping in LightGBM is a few lines in `models.py` if you want the extra points.
-`python -m hotel_risk.explain --shap` regenerates the SHAP plot
-(`pip install -r requirements-extra.txt`; on macOS LightGBM and XGBoost also need `libomp`).
-These optional extras are not part of the CI run.
+LightGBM came out on top, so it is the model used everywhere else (calibration, business impact, API).
+The gaps between the boosted models are small, so the ranking among them matters less than the gap to
+the logistic baseline. XGBoost and SHAP are optional extras (`pip install -r requirements-extra.txt`) and are not part of the CI
+run. On macOS, LightGBM and XGBoost need the `libomp` library (`conda install -c conda-forge llvm-openmp`).
 
 ## The API
 

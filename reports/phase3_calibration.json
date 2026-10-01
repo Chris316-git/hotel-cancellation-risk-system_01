@@ -10,40 +10,40 @@
   },
   "test_metrics": {
     "raw": {
-      "roc_auc": 0.848,
-      "brier": 0.1584,
-      "log_loss": 0.4756,
-      "ece": 0.0659
+      "roc_auc": 0.8534,
+      "brier": 0.1538,
+      "log_loss": 0.4508,
+      "ece": 0.0518
     },
     "platt": {
-      "roc_auc": 0.848,
-      "brier": 0.1549,
-      "log_loss": 0.4573,
-      "ece": 0.0472
+      "roc_auc": 0.8534,
+      "brier": 0.1518,
+      "log_loss": 0.4483,
+      "ece": 0.0454
     },
     "isotonic": {
-      "roc_auc": 0.8461,
-      "brier": 0.1557,
-      "log_loss": 0.4597,
-      "ece": 0.0415
+      "roc_auc": 0.8512,
+      "brier": 0.1533,
+      "log_loss": 0.4499,
+      "ece": 0.0436
     }
   },
   "threshold_policy": "lowest threshold with >=80% precision on calibration slice",
   "threshold_at_test": {
     "threshold": 0.46,
-    "flag_rate": 0.328,
-    "precision": 0.7377,
-    "recall": 0.6043
+    "flag_rate": 0.3358,
+    "precision": 0.7369,
+    "recall": 0.618
   },
   "top_risk_buckets_test": {
     "top_10pct": {
       "precision": 1.0
     },
     "top_20pct": {
-      "precision": 0.8476
+      "precision": 0.8473
     },
     "top_30pct": {
-      "precision": 0.7559
+      "precision": 0.7613
     }
   }
 }

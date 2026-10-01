@@ -30,7 +30,7 @@ def score(y, p) -> dict:
 def run(path: str) -> dict:
     df = clean(load_raw(path))
     out: dict = {}
-    models = {"logistic_baseline": make_baseline, "hist_gbm": make_gbm}
+    models = {"logistic_baseline": make_baseline, "lightgbm": make_gbm}
 
     train, test = temporal_split(df)
     for name, factory in models.items():

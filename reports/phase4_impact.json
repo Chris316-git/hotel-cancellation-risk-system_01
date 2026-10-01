@@ -7,21 +7,21 @@
   "test_bookings": 32778,
   "net_value_usd": {
     "no_overbooking": 0,
-    "fixed_threshold_0.5": 774350,
-    "fixed_threshold_0.8": 679377,
-    "cost_aware_model": 1223853,
+    "fixed_threshold_0.5": 667396,
+    "fixed_threshold_0.8": 537915,
+    "cost_aware_model": 1250641,
     "oracle_upper_bound": 3249488
   },
-  "captured_share_of_oracle": 0.377,
+  "captured_share_of_oracle": 0.385,
   "sensitivity_cost_aware_net_value_usd": {
-    "fill=0.3, walk=1.0x": 763281,
-    "fill=0.3, walk=2.0x": 551942,
-    "fill=0.3, walk=4.0x": 408131,
-    "fill=0.5, walk=1.0x": 1722351,
-    "fill=0.5, walk=2.0x": 1223853,
-    "fill=0.5, walk=4.0x": 867314,
-    "fill=0.8, walk=1.0x": 3420668,
-    "fill=0.8, walk=2.0x": 2644495,
-    "fill=0.8, walk=4.0x": 1790656
+    "fill=0.3, walk=1.0x": 771557,
+    "fill=0.3, walk=2.0x": 582659,
+    "fill=0.3, walk=4.0x": 397061,
+    "fill=0.5, walk=1.0x": 1752481,
+    "fill=0.5, walk=2.0x": 1250641,
+    "fill=0.5, walk=4.0x": 889747,
+    "fill=0.8, walk=1.0x": 3461622,
+    "fill=0.8, walk=2.0x": 2664607,
+    "fill=0.8, walk=4.0x": 1881147
   }
 }

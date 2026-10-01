@@ -13,7 +13,7 @@
     "brier": 0.1561,
     "log_loss": 0.4602,
     "base_rate": 0.4005,
-    "fit_seconds": 6.7
+    "fit_seconds": 7.5
   },
   "random_forest": {
     "roc_auc": 0.8481,
@@ -21,7 +21,7 @@
     "brier": 0.1554,
     "log_loss": 0.457,
     "base_rate": 0.4005,
-    "fit_seconds": 1.9
+    "fit_seconds": 2.3
   },
   "lightgbm": {
     "roc_auc": 0.8596,
@@ -29,7 +29,7 @@
     "brier": 0.1502,
     "log_loss": 0.4369,
     "base_rate": 0.4005,
-    "fit_seconds": 3.4
+    "fit_seconds": 3.7
   },
   "xgboost": {
     "roc_auc": 0.8576,
@@ -37,6 +37,6 @@
     "brier": 0.1511,
     "log_loss": 0.4385,
     "base_rate": 0.4005,
-    "fit_seconds": 1.8
+    "fit_seconds": 1.6
   }
 }
