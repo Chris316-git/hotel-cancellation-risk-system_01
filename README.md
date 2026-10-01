@@ -123,3 +123,8 @@ probability, a risk band (low/medium/high) and whether overselling the room is r
 under the Phase 4 cost assumptions. Records with no guests or a negative ADR are rejected.
 GitHub Actions runs the test suite on every push and pull request (`.github/workflows/ci.yml`).
 Monitoring ideas for production: track the cancel-rate drift seen in Phase 3 and retrain on a schedule.
+
+## License
+
+The code is released under the MIT License (see `LICENSE`). The MIT License covers the code only;
+the dataset in `data/raw/` is subject to the terms of its original publication (see the Data section).
