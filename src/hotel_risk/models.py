@@ -23,7 +23,7 @@ def make_gbm(random_state: int = 0) -> Pipeline:
     """Ordinal-encoded categoricals (handled natively as categories) -> HistGradientBoosting."""
     pre = ColumnTransformer([
         ("cat", OrdinalEncoder(handle_unknown="use_encoded_value", unknown_value=-1,
-                               encoded_missing_value=-1), CATEGORICAL),
+                               encoded_missing_value=-1, min_frequency=50), CATEGORICAL),
         ("num", "passthrough", NUMERIC),
     ])
     n_cat = len(CATEGORICAL)

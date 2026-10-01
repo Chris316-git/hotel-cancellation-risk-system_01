@@ -12,7 +12,7 @@ risk score into a business decision (overbooking / deposit policy). Built on the
 
 ## Roadmap
 - [x] Phase 1: scaffold, data cleaning, leakage audit, temporal split
-- [ ] Phase 2: baseline + gradient boosting models, temporal evaluation
+- [x] Phase 2: baseline + gradient boosting models, temporal evaluation
 - [ ] Phase 3: calibration and threshold selection
 - [ ] Phase 4: business-impact simulation
 - [ ] Phase 5: packaging / API / monitoring
@@ -24,3 +24,15 @@ pip install -r requirements.txt && pip install -e .
 python -m hotel_risk.audit
 pytest
 ```
+
+## Phase 2 results (booking-time features only)
+
+| Split | Model | ROC-AUC | PR-AUC | Brier |
+|---|---|---|---|---|
+| Temporal (train < 2017-03, test after) | Logistic baseline | 0.837 | 0.790 | 0.161 |
+| Temporal | HistGradientBoosting | **0.854** | **0.809** | **0.155** |
+| Random (for comparison) | Logistic baseline | 0.875 | 0.828 | 0.135 |
+| Random | HistGradientBoosting | 0.929 | 0.901 | 0.102 |
+
+A random split overstates performance (GBM AUC 0.929 vs 0.854 on a temporal split), so
+all reported numbers use the temporal split. Reproduce with `python -m hotel_risk.evaluate`.
