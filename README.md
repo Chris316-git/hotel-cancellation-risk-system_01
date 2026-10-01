@@ -15,7 +15,7 @@ risk score into a business decision (overbooking / deposit policy). Built on the
 - [x] Phase 2: baseline + gradient boosting models, temporal evaluation
 - [x] Phase 3: calibration and threshold selection
 - [x] Phase 4: business-impact simulation
-- [ ] Phase 5: packaging / API / monitoring
+- [x] Phase 5: packaging, prediction API, tests, CI
 
 ## Quickstart
 ```bash
@@ -75,3 +75,17 @@ because it adapts to each booking's price and stay length. Value ranges from $0.
 across fill-rate/walk-cost scenarios, so conclusions depend on real operating costs.
 Limitations: ignores hotel capacity and demand limits and treats bookings independently.
 Reproduce: `python -m hotel_risk.impact`.
+
+## Phase 5: serving
+
+```bash
+python -m hotel_risk.train data/raw/hotel_bookings.csv models/model.joblib   # saves model + calibrator
+uvicorn hotel_risk.api:app --port 8000                                      # POST /score, GET /health
+docker build -t hotel-risk . && docker run -p 8000:8000 -v $PWD/models:/app/models hotel-risk
+```
+
+`POST /score` takes a list of booking-time records and returns each booking's calibrated cancel
+probability, a risk band (low/medium/high) and whether overselling the room is recommended
+under the Phase 4 cost assumptions. Records with no guests or a negative ADR are rejected.
+GitHub Actions runs the test suite on every push and pull request (`.github/workflows/ci.yml`).
+Monitoring ideas for production: track the cancel-rate drift seen in Phase 3 and retrain on a schedule.
