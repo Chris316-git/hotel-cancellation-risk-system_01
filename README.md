@@ -1,8 +1,9 @@
 # Hotel Cancellation Risk System
 
 Predict which hotel bookings will cancel **at the moment they are made**, then turn the
-risk score into a business decision (overbooking / deposit policy). Built on the public
-[Hotel Booking Demand](https://www.kaggle.com/datasets/jessemostipak/hotel-booking-demand) dataset.
+risk score into a business decision (overbooking / deposit policy). Built on a hotel bookings
+dataset (~119k bookings from a city hotel and a resort hotel, 2015-2017), included in
+`data/raw/hotel_bookings.csv` so every step can be reproduced.
 
 ## Design principles
 - **Booking-time features only.** Columns such as `reservation_status`, `assigned_room_type`
@@ -20,7 +21,7 @@ risk score into a business decision (overbooking / deposit policy). Built on the
 ## Quickstart
 ```bash
 pip install -r requirements.txt && pip install -e .
-# place hotel_bookings.csv in data/raw/
+# the dataset is already in data/raw/hotel_bookings.csv
 python -m hotel_risk.audit
 pytest
 ```

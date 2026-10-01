@@ -1,5 +1,8 @@
 data/*
 !data/.gitkeep
+!data/raw/
+data/raw/*
+!data/raw/hotel_bookings.csv
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
