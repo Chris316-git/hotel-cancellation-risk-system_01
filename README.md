@@ -14,7 +14,7 @@ risk score into a business decision (overbooking / deposit policy). Built on the
 - [x] Phase 1: scaffold, data cleaning, leakage audit, temporal split
 - [x] Phase 2: baseline + gradient boosting models, temporal evaluation
 - [x] Phase 3: calibration and threshold selection
-- [ ] Phase 4: business-impact simulation
+- [x] Phase 4: business-impact simulation
 - [ ] Phase 5: packaging / API / monitoring
 
 ## Quickstart
@@ -54,3 +54,24 @@ on test, because the cancel rate drifted from 34% to 40%. The highest-risk 10% o
 100% cancellations on test (largely non-refundable-deposit bookings, a known quirk of this
 dataset), so the score is most informative in the middle of the range. Phase 4 prices these
 decisions in revenue terms. Reproduce: `python -m hotel_risk.calibrate`.
+
+## Phase 4: business impact
+
+Policy: oversell the room of a booking when its calibrated cancel probability `p` satisfies
+`p * gain > (1 - p) * cost`, where gain = resell-fill-rate x ADR x nights (room re-filled) and
+cost = relocation cost if the guest shows up. **Assumptions are illustrative** (fill rate 50%,
+walk cost 2 nights ADR + $50) and editable in `Assumptions`; sensitivity is in `reports/phase4_impact.json`.
+
+| Policy (test, 32,778 bookings) | Net value |
+|---|---|
+| No overbooking | $0 |
+| Flag p >= 0.5 | $675k |
+| Flag p >= 0.8 | $754k |
+| **Cost-aware model** | **$1.22M** |
+| Oracle (perfect foresight, upper bound) | $3.25M |
+
+The cost-aware policy captures about 37% of the oracle upper bound and beats fixed thresholds
+because it adapts to each booking's price and stay length. Value ranges from $0.4M to $3.4M
+across fill-rate/walk-cost scenarios, so conclusions depend on real operating costs.
+Limitations: ignores hotel capacity and demand limits and treats bookings independently.
+Reproduce: `python -m hotel_risk.impact`.
