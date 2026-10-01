@@ -1,0 +1,26 @@
+{
+  "logistic_regression": {
+    "roc_auc": 0.8365,
+    "pr_auc": 0.7897,
+    "brier": 0.1613,
+    "log_loss": 0.4719,
+    "base_rate": 0.4005,
+    "fit_seconds": 2.9
+  },
+  "hist_gbm": {
+    "roc_auc": 0.8535,
+    "pr_auc": 0.8087,
+    "brier": 0.1552,
+    "log_loss": 0.4568,
+    "base_rate": 0.4005,
+    "fit_seconds": 6.6
+  },
+  "random_forest": {
+    "roc_auc": 0.8481,
+    "pr_auc": 0.8027,
+    "brier": 0.1553,
+    "log_loss": 0.4571,
+    "base_rate": 0.4005,
+    "fit_seconds": 11.3
+  }
+}

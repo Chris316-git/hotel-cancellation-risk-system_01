@@ -63,6 +63,8 @@ python -m hotel_risk.audit                  # data checks + the leakage column l
 python -m hotel_risk.evaluate               # Phase 2: models, temporal vs random split
 python -m hotel_risk.calibrate              # Phase 3: calibration + thresholds
 python -m hotel_risk.impact                 # Phase 4: overbooking policy value
+python -m hotel_risk.explain                # which features drive the model
+python -m hotel_risk.compare_models         # logistic vs forest vs gradient boosting
 
 python -m hotel_risk.train data/raw/hotel_bookings.csv models/model.joblib
 uvicorn hotel_risk.api:app --port 8000      # then open http://localhost:8000/docs
@@ -127,6 +129,37 @@ The cost-aware policy beats fixed thresholds because it accounts for each bookin
 stay. Across the scenarios in `reports/phase4_impact.json` the value ranges from $0.4M to $3.4M,
 so the real answer depends on real operating costs. It also ignores hotel capacity and demand limits
 and treats bookings as independent, so treat the dollars as an illustration, not a forecast.
+
+### Which features matter, and which models were tried
+
+Permutation importance on the test period (shuffle one feature, see how much ROC-AUC drops):
+
+| Feature | AUC drop |
+|---|---|
+| `agent` | 0.119 |
+| `country` | 0.104 |
+| `deposit_type` | 0.079 |
+| `lead_time` | 0.027 |
+| `customer_type` | 0.022 |
+
+The plot is in `reports/feature_importance.png`. Two honest observations: `lead_time` and
+`deposit_type` are the kind of drivers you'd expect, but `agent` and `country` are the top two.
+Those are specific to *these* hotels (travel agent IDs and where guests come from), so a model
+trained here would not carry over to another hotel unchanged. That is a limitation of the data, not
+something more tuning would fix.
+
+Same temporal split, different model families:
+
+| Model | ROC-AUC | PR-AUC | Brier |
+|---|---|---|---|
+| Logistic regression | 0.837 | 0.790 | 0.161 |
+| Random forest | 0.848 | 0.803 | 0.155 |
+| HistGradientBoosting | **0.854** | **0.809** | **0.155** |
+
+Gradient boosting wins by a small margin, which is why it is the model used everywhere else.
+`python -m hotel_risk.compare_models` also runs LightGBM and XGBoost if they are installed, and
+`python -m hotel_risk.explain --shap` adds a SHAP summary plot (`pip install -r requirements-extra.txt`).
+These optional extras are not part of the CI run.
 
 ## The API
 
