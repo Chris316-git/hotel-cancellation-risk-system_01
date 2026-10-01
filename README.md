@@ -29,12 +29,12 @@ pytest
 
 | Split | Model | ROC-AUC | PR-AUC | Brier |
 |---|---|---|---|---|
-| Temporal (train < 2017-03, test after) | Logistic baseline | 0.837 | 0.790 | 0.161 |
-| Temporal | HistGradientBoosting | **0.854** | **0.809** | **0.155** |
+| Temporal (train < 2017-03, test after) | Logistic baseline | 0.836 | 0.789 | 0.161 |
+| Temporal | HistGradientBoosting | **0.852** | **0.807** | **0.156** |
 | Random (for comparison) | Logistic baseline | 0.875 | 0.828 | 0.135 |
-| Random | HistGradientBoosting | 0.929 | 0.901 | 0.102 |
+| Random | HistGradientBoosting | 0.929 | 0.900 | 0.102 |
 
-A random split overstates performance (GBM AUC 0.929 vs 0.854 on a temporal split), so
+A random split overstates performance (GBM AUC 0.929 vs 0.852 on a temporal split), so
 all reported numbers use the temporal split. Reproduce with `python -m hotel_risk.evaluate`.
 
 ## Phase 3: calibration and thresholds
@@ -44,12 +44,12 @@ Calibrators and the decision threshold are fit on the calibration slice only.
 
 | Test scores | Brier | Log loss | ECE |
 |---|---|---|---|
-| Raw GBM | 0.158 | 0.474 | 0.064 |
-| Platt (sigmoid) | 0.155 | 0.456 | 0.049 |
-| Isotonic | 0.155 | 0.456 | 0.043 |
+| Raw GBM | 0.158 | 0.476 | 0.066 |
+| Platt (sigmoid) | 0.155 | 0.457 | 0.047 |
+| Isotonic | 0.156 | 0.460 | 0.042 |
 
 Calibration improves probability quality without hurting ranking (AUC ~0.85). The threshold
-chosen for >=80% precision on the calibration slice (0.45) delivered 73% precision / 61% recall
+chosen for >=80% precision on the calibration slice (0.46) delivered 74% precision / 60% recall
 on test, because the cancel rate drifted from 34% to 40%. The highest-risk 10% of bookings were
 100% cancellations on test (largely non-refundable-deposit bookings, a known quirk of this
 dataset), so the score is most informative in the middle of the range. Phase 4 prices these
