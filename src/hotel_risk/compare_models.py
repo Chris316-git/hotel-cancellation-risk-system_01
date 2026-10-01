@@ -41,14 +41,14 @@ def candidates() -> dict:
         from lightgbm import LGBMClassifier
         out["lightgbm"] = lambda: Pipeline([("pre", _ordinal_pre()), ("clf", LGBMClassifier(
             n_estimators=400, learning_rate=0.05, num_leaves=31, random_state=0, verbose=-1))])
-    except ImportError:
-        pass
+    except Exception as e:  # not installed, or a native library (e.g. libomp on macOS) is missing
+        print(f"skipping optional model: {e.__class__.__name__}")
     try:
         from xgboost import XGBClassifier
         out["xgboost"] = lambda: Pipeline([("pre", _ordinal_pre()), ("clf", XGBClassifier(
             n_estimators=400, learning_rate=0.05, max_depth=6, random_state=0, eval_metric="logloss"))])
-    except ImportError:
-        pass
+    except Exception as e:  # not installed, or a native library (e.g. libomp on macOS) is missing
+        print(f"skipping optional model: {e.__class__.__name__}")
     return out
 
 

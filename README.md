@@ -138,11 +138,11 @@ Permutation importance on the test period (shuffle one feature, see how much ROC
 |---|---|
 | `agent` | 0.119 |
 | `country` | 0.104 |
-| `deposit_type` | 0.079 |
-| `lead_time` | 0.027 |
+| `deposit_type` | 0.082 |
+| `lead_time` | 0.028 |
 | `customer_type` | 0.022 |
 
-The plot is in `reports/feature_importance.png`. Two honest observations: `lead_time` and
+The plot is in `reports/feature_importance.png`, and a SHAP summary (which direction each feature pushes the prediction) is in `reports/shap_summary.png`. Two honest observations: `lead_time` and
 `deposit_type` are the kind of drivers you'd expect, but `agent` and `country` are the top two.
 Those are specific to *these* hotels (travel agent IDs and where guests come from), so a model
 trained here would not carry over to another hotel unchanged. That is a limitation of the data, not
@@ -158,8 +158,8 @@ Same temporal split, different model families:
 
 Gradient boosting wins by a small margin, which is why it is the model used everywhere else.
 `python -m hotel_risk.compare_models` also runs LightGBM and XGBoost if they are installed, and
-`python -m hotel_risk.explain --shap` adds a SHAP summary plot (`pip install -r requirements-extra.txt`).
-These optional extras are not part of the CI run.
+`python -m hotel_risk.explain --shap` regenerates the SHAP plot (`pip install -r requirements-extra.txt`;
+on macOS LightGBM and XGBoost also need `libomp`). These optional extras are not part of the CI run.
 
 ## The API
 
