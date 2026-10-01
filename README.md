@@ -65,12 +65,12 @@ walk cost 2 nights ADR + $50) and editable in `Assumptions`; sensitivity is in `
 | Policy (test, 32,778 bookings) | Net value |
 |---|---|
 | No overbooking | $0 |
-| Flag p >= 0.5 | $675k |
-| Flag p >= 0.8 | $754k |
+| Flag p >= 0.5 | $774k |
+| Flag p >= 0.8 | $679k |
 | **Cost-aware model** | **$1.22M** |
 | Oracle (perfect foresight, upper bound) | $3.25M |
 
-The cost-aware policy captures about 37% of the oracle upper bound and beats fixed thresholds
+The cost-aware policy captures about 38% of the oracle upper bound and beats fixed thresholds
 because it adapts to each booking's price and stay length. Value ranges from $0.4M to $3.4M
 across fill-rate/walk-cost scenarios, so conclusions depend on real operating costs.
 Limitations: ignores hotel capacity and demand limits and treats bookings independently.
