@@ -1,26 +1,42 @@
 {
   "logistic_regression": {
-    "roc_auc": 0.8365,
-    "pr_auc": 0.7897,
+    "roc_auc": 0.8363,
+    "pr_auc": 0.7894,
     "brier": 0.1613,
-    "log_loss": 0.4719,
+    "log_loss": 0.472,
     "base_rate": 0.4005,
-    "fit_seconds": 2.9
+    "fit_seconds": 1.1
   },
   "hist_gbm": {
-    "roc_auc": 0.8535,
-    "pr_auc": 0.8087,
-    "brier": 0.1552,
-    "log_loss": 0.4568,
+    "roc_auc": 0.852,
+    "pr_auc": 0.8073,
+    "brier": 0.1561,
+    "log_loss": 0.4602,
     "base_rate": 0.4005,
-    "fit_seconds": 6.6
+    "fit_seconds": 6.7
   },
   "random_forest": {
     "roc_auc": 0.8481,
-    "pr_auc": 0.8027,
-    "brier": 0.1553,
-    "log_loss": 0.4571,
+    "pr_auc": 0.8025,
+    "brier": 0.1554,
+    "log_loss": 0.457,
     "base_rate": 0.4005,
-    "fit_seconds": 11.3
+    "fit_seconds": 1.9
+  },
+  "lightgbm": {
+    "roc_auc": 0.8596,
+    "pr_auc": 0.8132,
+    "brier": 0.1502,
+    "log_loss": 0.4369,
+    "base_rate": 0.4005,
+    "fit_seconds": 3.4
+  },
+  "xgboost": {
+    "roc_auc": 0.8576,
+    "pr_auc": 0.8112,
+    "brier": 0.1511,
+    "log_loss": 0.4385,
+    "base_rate": 0.4005,
+    "fit_seconds": 1.8
   }
 }

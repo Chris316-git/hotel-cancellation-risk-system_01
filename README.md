@@ -152,14 +152,19 @@ Same temporal split, different model families:
 
 | Model | ROC-AUC | PR-AUC | Brier |
 |---|---|---|---|
-| Logistic regression | 0.837 | 0.790 | 0.161 |
+| Logistic regression | 0.836 | 0.789 | 0.161 |
 | Random forest | 0.848 | 0.803 | 0.155 |
-| HistGradientBoosting | **0.854** | **0.809** | **0.155** |
+| HistGradientBoosting (scikit-learn) | 0.852 | 0.807 | 0.156 |
+| XGBoost | 0.858 | 0.811 | 0.151 |
+| **LightGBM** | **0.860** | **0.813** | **0.150** |
 
-Gradient boosting wins by a small margin, which is why it is the model used everywhere else.
-`python -m hotel_risk.compare_models` also runs LightGBM and XGBoost if they are installed, and
-`python -m hotel_risk.explain --shap` regenerates the SHAP plot (`pip install -r requirements-extra.txt`;
-on macOS LightGBM and XGBoost also need `libomp`). These optional extras are not part of the CI run.
+LightGBM and XGBoost edge out scikit-learn's HistGradientBoosting by about 0.006-0.008 AUC. I kept
+HistGradientBoosting as the model used everywhere else (calibration, business impact, API) because
+it needs no extra dependency, the gap is small, and the pipeline's conclusions don't hinge on it.
+Swapping in LightGBM is a few lines in `models.py` if you want the extra points.
+`python -m hotel_risk.explain --shap` regenerates the SHAP plot
+(`pip install -r requirements-extra.txt`; on macOS LightGBM and XGBoost also need `libomp`).
+These optional extras are not part of the CI run.
 
 ## The API
 
