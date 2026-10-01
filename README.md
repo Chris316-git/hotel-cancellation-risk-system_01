@@ -5,6 +5,39 @@ risk score into a business decision (overbooking / deposit policy). Built on a h
 dataset (~119k bookings from a city hotel and a resort hotel, 2015-2017), included in
 `data/raw/hotel_bookings.csv` so every step can be reproduced.
 
+## Data
+
+The project uses the public **Hotel Booking Demand** dataset: 119,390 booking records (31 columns of
+booking attributes plus the `is_canceled` label) for two hotels, a city hotel and a resort hotel,
+with arrival dates from July 2015 to August 2017. The file is included in `data/raw/hotel_bookings.csv`
+so that every step can be reproduced.
+
+Reference: N. Antonio, A. de Almeida, L. Nunes, "Hotel booking demand datasets", *Data in Brief*, 22, 2019
+([ISCTE repository](https://repositorio.iscte-iul.pt/handle/10071/16929)). Please consult the original
+publication for the terms of use before redistributing or reusing the data.
+
+**Why this dataset**
+
+- **Booking-level with a real outcome.** Each row is one reservation with a cancellation label, which is
+  what a cancellation-risk model needs. Aggregate hotel statistics would not support this.
+- **Arrival dates and lead times.** These allow a time-based train/test split, which is central to this
+  project (random splits overstate performance, see Phase 2).
+- **Documented and citable.** The data comes with a peer-reviewed description, so its origin and
+  structure can be checked.
+- **Rich enough to study leakage.** It contains post-booking columns (`reservation_status`,
+  `assigned_room_type`, `booking_changes`, ...) that make a good test of leakage-safe feature selection.
+
+**Limitations**
+
+- The data covers 2015-2017 and two hotels, so results show the method rather than current market
+  performance, and absolute numbers will not transfer to other hotels or regions.
+- It is not US data. Booking-level data with cancellations from US hotels is generally proprietary, and
+  I did not find a verifiable recent public alternative.
+- Copies of this dataset circulate online with relabelled hotel names, shifted dates or extra columns.
+  These were not used here because their provenance is unclear and altered dates would break the
+  temporal validation.
+- The business-impact costs in Phase 4 are illustrative assumptions, not figures from these hotels.
+
 ## Design principles
 - **Booking-time features only.** Columns such as `reservation_status`, `assigned_room_type`
   and `booking_changes` are only known after the outcome and are excluded (see `LEAKAGE_COLUMNS`).
