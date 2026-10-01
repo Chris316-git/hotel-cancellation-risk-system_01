@@ -1,0 +1,1 @@
+"""Hotel cancellation risk system."""
