@@ -13,7 +13,7 @@ risk score into a business decision (overbooking / deposit policy). Built on the
 ## Roadmap
 - [x] Phase 1: scaffold, data cleaning, leakage audit, temporal split
 - [x] Phase 2: baseline + gradient boosting models, temporal evaluation
-- [ ] Phase 3: calibration and threshold selection
+- [x] Phase 3: calibration and threshold selection
 - [ ] Phase 4: business-impact simulation
 - [ ] Phase 5: packaging / API / monitoring
 
@@ -36,3 +36,21 @@ pytest
 
 A random split overstates performance (GBM AUC 0.929 vs 0.854 on a temporal split), so
 all reported numbers use the temporal split. Reproduce with `python -m hotel_risk.evaluate`.
+
+## Phase 3: calibration and thresholds
+
+Chronological train (< 2016-12) / calibration (2016-12 to 2017-02) / test (2017-03+) slices.
+Calibrators and the decision threshold are fit on the calibration slice only.
+
+| Test scores | Brier | Log loss | ECE |
+|---|---|---|---|
+| Raw GBM | 0.158 | 0.474 | 0.064 |
+| Platt (sigmoid) | 0.155 | 0.456 | 0.049 |
+| Isotonic | 0.155 | 0.456 | 0.043 |
+
+Calibration improves probability quality without hurting ranking (AUC ~0.85). The threshold
+chosen for >=80% precision on the calibration slice (0.45) delivered 73% precision / 61% recall
+on test, because the cancel rate drifted from 34% to 40%. The highest-risk 10% of bookings were
+100% cancellations on test (largely non-refundable-deposit bookings, a known quirk of this
+dataset), so the score is most informative in the middle of the range. Phase 4 prices these
+decisions in revenue terms. Reproduce: `python -m hotel_risk.calibrate`.

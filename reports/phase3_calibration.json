@@ -1,0 +1,49 @@
+{
+  "sizes": {
+    "train": 74744,
+    "calib": 11687,
+    "test": 32778
+  },
+  "base_rate": {
+    "calib": 0.3424,
+    "test": 0.4005
+  },
+  "test_metrics": {
+    "raw": {
+      "roc_auc": 0.8483,
+      "brier": 0.1583,
+      "log_loss": 0.4736,
+      "ece": 0.064
+    },
+    "platt": {
+      "roc_auc": 0.8483,
+      "brier": 0.1546,
+      "log_loss": 0.456,
+      "ece": 0.0487
+    },
+    "isotonic": {
+      "roc_auc": 0.8472,
+      "brier": 0.1553,
+      "log_loss": 0.4559,
+      "ece": 0.0426
+    }
+  },
+  "threshold_policy": "lowest threshold with >=80% precision on calibration slice",
+  "threshold_at_test": {
+    "threshold": 0.45,
+    "flag_rate": 0.3366,
+    "precision": 0.7314,
+    "recall": 0.6148
+  },
+  "top_risk_buckets_test": {
+    "top_10pct": {
+      "precision": 1.0
+    },
+    "top_20pct": {
+      "precision": 0.8487
+    },
+    "top_30pct": {
+      "precision": 0.7552
+    }
+  }
+}
